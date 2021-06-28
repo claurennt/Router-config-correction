@@ -1,5 +1,5 @@
 {
-  "name": "node-express-sql-finalworkshop",
+  "name": "express-sql-finalworkshop",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,8 +15,23 @@
     "morgan": "~1.9.1",
     "pg": "^8.6.0"
   },
+  "engines": {
+    "node": "14.17.0"
+  },
   "devDependencies": {
     "eslint": "^7.29.0",
     "prettier": "2.3.2"
-  }
+  },
+  "description": "node/express API",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claurennt/node-express-sql-finalworkshop.git"
+  },
+  "author": "claurennt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/claurennt/node-express-sql-finalworkshop/issues"
+  },
+  "homepage": "https://github.com/claurennt/node-express-sql-finalworkshop#readme"
 }

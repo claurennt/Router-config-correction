@@ -4,6 +4,7 @@ const usersRouter = express.Router();
 const usersController = require("../controllers/usersController.js");
 const getOneUser = require("../middlewares/getOneUser.js");
 const validatorRequirements = require("../middlewares/validatorRequirements");
+const authentication = require("../middlewares/authentication");
 /* mount middlewares to this specific path and for specific actions*/
 
 /* extract all cb from usersController module*/
@@ -19,9 +20,9 @@ const {
 usersRouter
   .route("/:id?")
   .delete(getOneUser)
-  .put([validatorRequirements, getOneUser])
-  .patch(getOneUser)
-  .post(validatorRequirements);
+  .put([authentication, validatorRequirements, getOneUser])
+  .patch([authentication, getOneUser])
+  .post([authentication, validatorRequirements]);
 
 /* GET users listing. */
 usersRouter.get("/", displayAllUsers);
