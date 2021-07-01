@@ -5,41 +5,27 @@ const usersController = require("../controllers/usersController.js");
 const getOneUser = require("../middlewares/getOneUser.js");
 const validatorRequirements = require("../middlewares/validatorRequirements");
 const authentication = require("../middlewares/authentication");
-/* mount middlewares to this specific path and for specific actions*/
 
 /* extract all cb from usersController module*/
 const {
-  displayAllUsers,
-  displayOneUser,
-  postNewUser,
-  changeEntireUser,
-  changeOnlySpecificFieldOfUser,
-  deleteOneUser,
+  display_all_users,
+  display_one_user,
+  post_new_user,
+  change_entire_user,
+  change_only_specific_field_of_user,
+  delete_one_user,
 } = usersController;
 
+/* attach mw and controllers to specific routes and methods*/
+
 usersRouter
-  .route("/:id?")
-  .delete(getOneUser)
-  .put([authentication, validatorRequirements, getOneUser])
-  .patch([authentication, getOneUser])
-  .post([authentication, validatorRequirements]);
+  .route("/:id")
+  .get([getOneUser, display_one_user])
+  .delete(getOneUser, delete_one_user)
+  .put([authentication, validatorRequirements, getOneUser, change_entire_user])
+  .patch([authentication, getOneUser, change_only_specific_field_of_user])
+  .post([authentication, validatorRequirements, post_new_user]);
 
-/* GET users listing. */
-usersRouter.get("/", displayAllUsers);
-
-/* GET one specific  user by id. */
-usersRouter.get("/:id", getOneUser, displayOneUser);
-
-/* POST new user with validationRequirements mw mounted before */
-usersRouter.post("/", postNewUser);
-
-/* PUT entire user with validationRequirements mw mounted before */
-usersRouter.put("/:id", changeEntireUser);
-
-/* PATCH specific field of user  */
-usersRouter.patch("/:id", changeOnlySpecificFieldOfUser);
-
-/* DELETE  user specific  user by id.  */
-usersRouter.delete("/:id", deleteOneUser);
+usersRouter.route("/").get(display_all_users);
 
 module.exports = usersRouter;
