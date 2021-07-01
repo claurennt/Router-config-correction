@@ -4,20 +4,20 @@ const errorHandler = require("../middlewares/errorHandler");
 const { validationResult } = require("express-validator");
 
 /* callback to display all users */
-const displayAllUsers = (req, res, next) => {
+const display_all_users = (req, res, next) => {
   db.query("SELECT * FROM users ORDER BY ID ASC;")
     .then((data) => res.json(data.rows))
     .catch((err) => next(err));
 };
 
 /* callback to display specific user */
-const displayOneUser = (req, res) => {
+const display_one_user = (req, res) => {
   // send back to the user the data coming from the req handled in the mw, which is assigned from data.rows[0] for instance
   res.json(req.foundUser);
 };
 
 /* callback to post new user */
-const postNewUser = (req, res, next) => {
+const post_new_user = (req, res, next) => {
   const { first_name, last_name } = req.body;
 
   /* catch validation result errors coming from validatorRequirements mw */
@@ -42,7 +42,7 @@ const postNewUser = (req, res, next) => {
 };
 
 /* callback to change entire user */
-const changeEntireUser = (req, res, next) => {
+const change_entire_user = (req, res, next) => {
   const { first_name, last_name } = req.body;
 
   /* retrieve the id from the req.foundUser coming from the getOneUser mw */
@@ -73,7 +73,7 @@ const changeEntireUser = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const changeOnlySpecificFieldOfUser = (req, res, next) => {
+const change_only_specific_field_of_user = (req, res, next) => {
   /* retrieve changed key value pair from req.body */
   const changedField = Object.keys(req.body);
   const changedValue = Object.values(req.body)[0];
@@ -96,7 +96,7 @@ const changeOnlySpecificFieldOfUser = (req, res, next) => {
 };
 
 /* DELETE  user specific  user by id.  */
-const deleteOneUser = (req, res, next) => {
+const delete_one_user = (req, res, next) => {
   const { id } = req.foundUser;
 
   const deleteUser = {
@@ -113,10 +113,10 @@ const deleteOneUser = (req, res, next) => {
 };
 
 module.exports = {
-  displayAllUsers,
-  displayOneUser,
-  postNewUser,
-  changeEntireUser,
-  changeOnlySpecificFieldOfUser,
-  deleteOneUser,
+  display_all_users,
+  display_one_user,
+  post_new_user,
+  change_entire_user,
+  change_only_specific_field_of_user,
+  delete_one_user,
 };
