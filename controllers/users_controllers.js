@@ -1,30 +1,45 @@
 const db = require("../database/client.js");
 
-const errorHandler = require("../middlewares/errorHandler");
+
 const { validationResult } = require("express-validator");
 
 /* callback to display all users */
-const display_all_users = (req, res, next) => {
-  db.query("SELECT * FROM users ORDER BY ID ASC;")
-    .then((data) => res.json(data.rows))
-    .catch((err) => next(err));
-};
+const display_all_users = async (req, res, next) => {
+  try {
+    const {rows} = await db.query("SELECT * FROM users");
+    return rows ? res.json(rows) : res.status(404).send("No users in the DB");
+  } catch (err) {
+    next(err);
+  }
+}
 
-/* callback to display specific user */
-const display_one_user = (req, res) => {
-  // send back to the user the data coming from the req handled in the mw, which is assigned from data.rows[0] for instance
-  res.json(req.foundUser);
-};
+const display_one_user = async (req, res, next) => {
+  const { id } = req.params;
+
+  /* create findbyUser object with query text and respective valeus */
+  const findUserById = {
+    text: `
+    SELECT *
+    FROM users
+    WHERE id=$1
+    `,
+    values: [id],
+  };
+try{
+  /* execute query on db and send back error or pass on successful req */
+ const {rows} = await db.query(findUserById)
+ 
+    return rows ? res.json(rows) : res.status(404).send("No user(s) with that id");
+  } catch (err) {
+    next(err);
+  }
+  }
 
 /* callback to post new user */
-const post_new_user = (req, res, next) => {
+const create_new_user = (req, res, next) => {
   const { first_name, last_name } = req.body;
 
-  /* catch validation result errors coming from validatorRequirements mw */
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
+  
 
   const createNewUser = {
     text: `
@@ -115,7 +130,7 @@ const delete_one_user = (req, res, next) => {
 module.exports = {
   display_all_users,
   display_one_user,
-  post_new_user,
+  create_new_user,
   change_entire_user,
   change_only_specific_field_of_user,
   delete_one_user,

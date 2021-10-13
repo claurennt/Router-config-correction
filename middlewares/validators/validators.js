@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { body, validationResult, check } = require("express-validator");
+const { body } = require("express-validator");
 
 const validatorRequirements = [
   body(
