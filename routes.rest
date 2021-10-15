@@ -1,0 +1,65 @@
+###
+GET http://localhost:3000/users/
+
+###
+GET http://localhost:3000/users/3
+
+###
+GET http://localhost:3000/users/155
+
+
+//create_one_user
+###
+POST http://localhost:3000/users/
+Content-Type: application/json
+
+{
+    
+        "first_name": "Tww",
+        "last_name": "",
+        //token       
+}
+
+###
+DELETE http://localhost:3000/users/49
+
+###
+PUT http://localhost:3000/users/11
+Content-Type: application/json
+
+{
+        "first_name": "nonna",
+        "last_name": "bina",
+        "token": "pose"       
+}
+
+
+###
+PATCH http://localhost:3000/users/50
+Content-Type: application/json
+
+{
+    
+        "first_name": "test",
+          
+}
+//create_multiple_users
+###
+# POST http://localhost:3000/users/
+# Content-Type: application/json
+
+# {
+#   "users":[
+#         {
+#             "first_name":"vvv",
+#             "last_name": "wwww"
+#         },
+#         {
+#             "first_name":"ddd",
+#             "last_name": "bbbb"
+#         } 
+#     ],
+#     "token": "pose"
+# }
+
+
