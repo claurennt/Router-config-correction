@@ -14,20 +14,20 @@ const checkUserExistence = async (req, res, next) => {
     values: [id],
   };
 
-try{
+  try {
+    /* execute query on db and send back error or pass on successful req */
+    const { rows } = await db.query(findUserById);
 
+    if (!rows.length)
+      return res.status(404).send("A user with this id does not exist");
 
-  /* execute query on db and send back error or pass on successful req */
-  const  {rows} = await db.query(findUserById)
-  
-   if(!rows.length) return res.status(404).send("A user with this id does not exist");
-        
-      /* the user we get from the query which is stored in data.rows[0] willbe assigned to the war req.user */
-      req.foundUser = rows;
-    
-      /* we call next so that we can move on to the next mw bc successful */
-      next();
-    } catch(err) { console.log(err)}
+    /* we attach the found user to the req and call next */
+    req.foundUser = rows[0];
+
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
-module.exports =  checkUserExistence;
+module.exports = checkUserExistence;
